@@ -26,13 +26,9 @@ public class EngNum
         String sortedNum = sortByPattern(input, "[^\\d]*");
 
         StringBuilder output = new StringBuilder();
-        for (int i = 0; i < input.length(); i++)
+        int range = Math.max(sortedEng.length(), sortedNum.length());
+        for (int i = 0; i < range; i++)
         {
-            if (i > sortedEng.length()-1 && i > sortedNum.length()-1)
-            {
-                break;
-            }
-
             if (i < sortedEng.length())
             {
                 output.append(sortedEng.charAt(i));
