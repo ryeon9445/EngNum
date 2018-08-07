@@ -3,8 +3,12 @@ import java.util.Arrays;
 /**
  * Created by CBR on 2018. 5. 30..
  */
-public class EngNum
+class EngNum
 {
+    private static final String MATCH_INPUT  = "[a-zA-Z0-9]*";
+    private static final String MATCH_ENG    = "[^a-zA-Z]*";
+    private static final String MATCH_NUM    = "[^\\d]*";
+
     public String sort(final String input)
     {
         if (input == null)
@@ -17,34 +21,36 @@ public class EngNum
             throw new IllegalArgumentException("do not empty");
         }
 
-        if (!input.matches("[a-zA-Z0-9]*"))
+        if (!input.matches(MATCH_INPUT))
         {
             throw new IllegalArgumentException("only english or number");
         }
 
-        String sortedEng = sortByPattern(input, "[^a-zA-Z]*");
-        String sortedNum = sortByPattern(input, "[^\\d]*");
+        char[] charInput = input.toCharArray();
+        Arrays.sort(charInput);
+        String sortedInput = new String(charInput);
+
+        String splitEng = splitByPattern(sortedInput, MATCH_ENG);
+        String splitNum = splitByPattern(sortedInput, MATCH_NUM);
 
         StringBuilder output = new StringBuilder();
-        int range = Math.max(sortedEng.length(), sortedNum.length());
+        int range = Math.max(splitEng.length(), splitNum.length());
         for (int i = 0; i < range; i++)
         {
-            if (i < sortedEng.length())
+            if (i < splitEng.length())
             {
-                output.append(sortedEng.charAt(i));
+                output.append(splitEng.charAt(i));
             }
-            if (i < sortedNum.length())
+            if (i < splitNum.length())
             {
-                output.append(sortedNum.charAt(i));
+                output.append(splitNum.charAt(i));
             }
         }
         return output.toString();
     }
 
-    private String sortByPattern(final String input, final String pattern)
+    private String splitByPattern(final String sortedInput, final String pattern)
     {
-        char[] strings = input.replaceAll(pattern, "").toCharArray();
-        Arrays.sort(strings);
-        return new String(strings);
+        return sortedInput.replaceAll(pattern, "");
     }
 }
